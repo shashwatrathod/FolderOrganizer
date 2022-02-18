@@ -3,12 +3,12 @@ import pathlib
 import sys
 
 from organizer.organizer import Organizer
-# from organizer.DirectoryTree import DirectoryTree
+from organizer.DirectoryTree import DirectoryTree
 
 from . import __version__
 
 
-def main():
+def main() -> None:
     args = parse_cli_args()
     root_dir = pathlib.Path(args.root_dir)
     if not root_dir.is_dir():
@@ -17,8 +17,15 @@ def main():
 
     file_organizer = Organizer(root_dir=root_dir)
     file_organizer.organize()
-    # tree = DirectoryTree(root_dir=root_dir)
-    # tree.generate()
+
+    if not args.no_print_tree:
+        print_directory_tree(root_dir)
+
+
+def print_directory_tree(root_dir: pathlib.Path) -> None:
+    print("<------------Your directory tree------------>\n\n")
+    tree = DirectoryTree(root_dir=root_dir)
+    tree.generate()
 
 
 def parse_cli_args() -> argparse.Namespace:
@@ -30,5 +37,8 @@ def parse_cli_args() -> argparse.Namespace:
 
     parser.add_argument("--root-dir", "-d", metavar="ROOT_DIR",
                         default=".", help="Name of the directory whose files are to be sorted", nargs="?")
+
+    parser.add_argument("--no-print-tree", "-n", action="store_true",
+                        help="Add this flag to not print the directory tree")
 
     return parser.parse_args()
