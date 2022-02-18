@@ -10,6 +10,9 @@ from . import __version__
 
 def main() -> None:
     args = parse_cli_args()
+    if args.root_dir == None:
+        print("None directory provided!")
+        sys.exit(1)
     root_dir = pathlib.Path(args.root_dir)
     if not root_dir.is_dir():
         print("The mentioned directory doesn't exist.")
@@ -41,9 +44,8 @@ def parse_cli_args() -> argparse.Namespace:
         "--root-dir",
         "-d",
         metavar="ROOT_DIR",
-        default=".",
         help="Name of the directory whose files are to be sorted",
-        nargs="?",
+        required=True,
     )
 
     parser.add_argument(
