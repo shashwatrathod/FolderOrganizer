@@ -104,6 +104,8 @@
     ".jsx",
     ".tsx",
     ".eslintrc",
-    ".gitignore"
+    ".gitignore",
+    ".lock",
+    ".toml"
   ]
 }

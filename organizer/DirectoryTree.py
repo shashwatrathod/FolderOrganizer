@@ -12,11 +12,17 @@ SPACE_PREFIX = "    "
 
 
 class DirectoryTree:
-
-    def __init__(self, root_dir: str, dir_only: bool = False, output_file=sys.stdout, sort_file_first: bool = False) -> None:
+    def __init__(
+        self,
+        root_dir: str,
+        dir_only: bool = False,
+        output_file=sys.stdout,
+        sort_file_first: bool = False,
+    ) -> None:
         self._output_file = output_file
         self._generator = _TreeGenerator(
-            root_dir, dir_only=dir_only, sort_file_first=sort_file_first)
+            root_dir, dir_only=dir_only, sort_file_first=sort_file_first
+        )
 
     def generate(self) -> None:
         tree = self._generator.build_tree()
@@ -31,8 +37,9 @@ class DirectoryTree:
 
 
 class _TreeGenerator:
-
-    def __init__(self, root_dir: str, dir_only: bool = False, sort_file_first: bool = False) -> None:
+    def __init__(
+        self, root_dir: str, dir_only: bool = False, sort_file_first: bool = False
+    ) -> None:
         self._root_dir = pathlib.Path(root_dir)
         self._dir_only = dir_only
         self._sort_file_first = sort_file_first
@@ -52,22 +59,32 @@ class _TreeGenerator:
             entries = [x for x in directory.iterdir() if x.is_dir()]
             return entries
         entries = [x for x in directory.iterdir()]
-        entries = sorted(entries, key=lambda entry: entry.is_file(
-        ) if self._sort_file_first else not entry.is_file())
+        entries = sorted(
+            entries,
+            key=lambda entry: entry.is_file()
+            if self._sort_file_first
+            else not entry.is_file(),
+        )
         return entries
 
     def _tree_body(self, directory: pathlib.Path, prefix: str = "") -> None:
         entries = self._prepare_entries(directory)
         entries_count = len(entries)
         for index, entry in enumerate(entries):
-            connector = TEE if index != entries_count-1 else ELBOW
+            connector = TEE if index != entries_count - 1 else ELBOW
             if entry.is_dir():
-                self._add_directory(
-                    entry, index, entries_count, prefix, connector)
+                self._add_directory(entry, index, entries_count, prefix, connector)
             else:
                 self._add_file(entry, prefix, connector)
 
-    def _add_directory(self, directory: pathlib.Path,  index: int, entries_count: int, prefix: str, connector: str):
+    def _add_directory(
+        self,
+        directory: pathlib.Path,
+        index: int,
+        entries_count: int,
+        prefix: str,
+        connector: str,
+    ):
         self._tree.append(f"{prefix}{connector} {directory.name}{os.sep}")
         if index != entries_count - 1:
             prefix += PIPE_PREFIX
@@ -79,5 +96,4 @@ class _TreeGenerator:
             self._tree.append(prefix.rstrip())
 
     def _add_file(self, file: pathlib.Path, prefix, connector) -> None:
-        self._tree.append(
-            f"{prefix}{connector} {file.name}")
+        self._tree.append(f"{prefix}{connector} {file.name}")

@@ -30,15 +30,27 @@ def print_directory_tree(root_dir: pathlib.Path) -> None:
 
 def parse_cli_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        prog="organizer", description="a file organizer application to sort files based on media types")
+        prog="organizer",
+        description="a file organizer application to sort files based on media types",
+    )
     parser.version = __version__
 
     parser.add_argument("--version", "-v", action="version")
 
-    parser.add_argument("--root-dir", "-d", metavar="ROOT_DIR",
-                        default=".", help="Name of the directory whose files are to be sorted", nargs="?")
+    parser.add_argument(
+        "--root-dir",
+        "-d",
+        metavar="ROOT_DIR",
+        default=".",
+        help="Name of the directory whose files are to be sorted",
+        nargs="?",
+    )
 
-    parser.add_argument("--no-print-tree", "-n", action="store_true",
-                        help="Add this flag to not print the directory tree")
+    parser.add_argument(
+        "--no-print-tree",
+        "-n",
+        action="store_true",
+        help="Add this flag to not print the directory tree",
+    )
 
     return parser.parse_args()

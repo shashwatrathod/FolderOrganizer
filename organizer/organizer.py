@@ -3,7 +3,9 @@ import pathlib
 from typing import List
 import json
 
-with open(pathlib.Path(os.path.dirname(__file__)) / "extensions.json", "r") as extensions:
+with open(
+    pathlib.Path(os.path.dirname(__file__)) / "extensions.json", "r"
+) as extensions:
     EXTENSIONS = json.load(extensions)
 
 
@@ -29,5 +31,4 @@ class Organizer:
             file_extension = file.suffix
             for folder_name, extension_list in Organizer.EXTENSIONS.items():
                 if file_extension in extension_list:
-                    file.rename(self._root_dir.resolve() /
-                                folder_name / file.name)
+                    file.rename(self._root_dir.resolve() / folder_name / file.name)
