@@ -48,14 +48,14 @@ class Organizer:
 
     def handle_delete_destination_strategy(self, destination_path: pathlib.Path) -> None:
         """
-        Removes the file present at the given destination path if it exists.
+        Removes the file present at the given path if it exists.
         Args:
-            destination_path (pathlib.Path): path to the conflicting file that is to be deleted.
+            destination_path (pathlib.Path): path to the file that is to be deleted.
         """
         if os.path.exists(str(destination_path)):
             os.remove(str(destination_path))
 
-    def _handle_interactive_conflict_strategy(self) -> ConflictStrategy:
+    def _get_conflict_strategy_from_user(self) -> ConflictStrategy:
         """
         Displays a menu to the user asking for their choice to resolve the given conflict. Returns the user's choice
         in the form of ConflictStrategy. Defaults to ConflictStrategy.IGNORE in case of BAD user input.
@@ -97,7 +97,7 @@ class Organizer:
                         strategy = self._conflict_strategy
 
                         if (strategy == ConflictStrategy.INTERACTIVE):
-                            strategy = self._handle_interactive_conflict_strategy()
+                            strategy = self._get_conflict_strategy_from_user()
 
                         if (strategy == ConflictStrategy.RENAME_SOURCE):
                             destination_path = self.handle_rename_source_strategy(file.name, destination_base_dir)
